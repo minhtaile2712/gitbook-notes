@@ -31,3 +31,9 @@
 {% swagger src="../.gitbook/assets/swagger.json" path="/api/v1/receiver/{id}/make-default" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
+
+{% swagger method="get" path="" baseUrl="" summary="Operation summary" %}
+{% swagger-description %}
+Operation description
+{% endswagger-description %}
+{% endswagger %}
