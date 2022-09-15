@@ -32,7 +32,7 @@
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger method="get" path="" baseUrl="" summary="Operation summary" %}
+{% swagger method="get" path="" baseUrl="https://api.gitbook.com/v1/users" summary="Operation summary" %}
 {% swagger-description %}
 Operation description
 {% endswagger-description %}
