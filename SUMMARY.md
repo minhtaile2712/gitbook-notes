@@ -1,6 +1,7 @@
 # Table of contents
 
 * [README](README.md)
+* [Thuật ngữ](thuat-ngu.md)
 * [abp](abp.md)
 * [dotnet](dotnet.md)
 * [SQL](sql.md)
