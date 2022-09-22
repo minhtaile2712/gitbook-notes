@@ -13,3 +13,6 @@ mkdir BookStore
 cd BookStore
 abp new BookStore
 ```
+
+## Localization
+
