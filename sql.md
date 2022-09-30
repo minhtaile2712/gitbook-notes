@@ -18,3 +18,22 @@ Connection string:
 var Default = "Server=(LocalDb)\\MSSQLLocalDB;Database=BookStore;Trusted_Connection=True";
 const string connectionString = @"Server=localhost,1433;Database=taidb;User Id=SA;Password=P@ssw0rd";
 ```
+
+## mysql (Docker)
+
+Environment variables
+
+(required) MYSQL\_ROOT\_PASSWORD=password
+
+## mcr.microsoft.com/mssql/server:2019 (Docker)
+
+Environment variables
+
+(required) ACCEPT\_EULA(=Y)
+
+(optional) MSSQL\_SA\_PASSWORD=password
+
+(optional) MSSQL\_PID=(Developer(default)|Express)
+
+
+
