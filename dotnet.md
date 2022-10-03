@@ -1,5 +1,7 @@
 # dotnet
 
+## dotnet
+
 Create a project
 
 ```powershell
@@ -12,6 +14,10 @@ To work with database, install these dependencies:
 dotnet add package Microsoft.EntityFrameworkCore
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 ```
+
+## Entity Framework
+
+### Migration
 
 dotnet ef migrations add Name\_Of\_Migration
 
