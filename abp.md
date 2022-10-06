@@ -14,7 +14,41 @@ cd BookStore
 abp new BookStore
 ```
 
-Các bước để thêm một Entity
+## Some note
+
+```
+*.Domain.Shared contains
+- Constants (BookConsts)
+- Enums (BookType)
+*.Domain contains
+- Entities, aggregate roots (Book)
+- Domain services (BookManager)
+- Value objects (BookStoreConsts)
+- Repository interfaces (IBookRepository)
+*.Application.Contracts contains
+- Application service interfaces (IBookAppService)
+- Data transfer objects (BookCreationDto)
+*.Application contains
+- Application service implementations (BookAppService)
+*.EntityFrameworkCore contains
+- *Dbcontext (EntityFrameworkCore/BookStoreDbContext)
+- Repository implementations (Authors/EfCoreAuthorRepository)
+
+```
+
+```
+NewThingConsts in *.Domain.Shared/NewThings
+NewThingManager in *.Domain/NewThings
+NewThingFirstException in *.Domain/NewThings
+*DomainErrorCodes in .Domain.Shared
+Localization//en.json in *.Domain.Shared
+INewThingRepository in *.Domain/NewThings
+add DbSet property in *DbCondtext in *.EntityFrameworkCore
+add builder.Entity(b => {}) in OnModelCreating in *DbContext
+add db migration new EfCoreNewThingRepository in *.EntityFrameworkCore/NewThings
+```
+
+## Các bước để thêm một Entity
 
 Thêm Entity
 
@@ -263,18 +297,3 @@ namespace Acme.BookStore.Authors
 </details>
 
 Thêm DbSet property Things
-
-
-
-NewThing Entity in \*.Domain/NewThings NewThingConsts in \*.Domain.Shared/NewThings NewThingManager in \*.Domain/NewThings NewThingFirstException in \*.Domain/NewThings \*DomainErrorCodes in _.Domain.Shared Localization/_/en.json in \*.Domain.Shared INewThingRepository in \*.Domain/NewThings add DbSet property in \*DbContext in \*.EntityFrameworkCore add builder.Entity(b => {}) in OnModelCreating in \*DbContext add db migration new EfCoreNewThingRepository in \*.EntityFrameworkCore/NewThings
-
-<details>
-
-<summary>dfsđsf</summary>
-
-
-
-</details>
-
-## Localization
-
