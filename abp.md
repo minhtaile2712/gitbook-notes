@@ -14,7 +14,7 @@ cd BookStore
 abp new BookStore
 ```
 
-## Some note
+## Cấu trúc
 
 ```
 *.Domain.Shared contains
@@ -36,21 +36,9 @@ abp new BookStore
 
 ```
 
-```
-NewThingConsts in *.Domain.Shared/NewThings
-NewThingManager in *.Domain/NewThings
-NewThingFirstException in *.Domain/NewThings
-*DomainErrorCodes in .Domain.Shared
-Localization//en.json in *.Domain.Shared
-INewThingRepository in *.Domain/NewThings
-add DbSet property in *DbCondtext in *.EntityFrameworkCore
-add builder.Entity(b => {}) in OnModelCreating in *DbContext
-add db migration new EfCoreNewThingRepository in *.EntityFrameworkCore/NewThings
-```
-
 ## Các bước để thêm một Entity
 
-Thêm Entity
+### Thêm Entity
 
 Trong project \*.Domain, trong folder Things, tạo class Thing
 
@@ -110,7 +98,7 @@ namespace Acme.BookStore.Authors
 
 </details>
 
-Thêm Const (nếu cần)
+### Thêm Const (nếu cần)
 
 Trong project \*.Domain.Shared, trong folder Things, tạo class ThingConsts
 
@@ -131,7 +119,7 @@ namespace Acme.BookStore.Authors
 
 </details>
 
-Thêm Manager
+### Thêm Manager
 
 Trong project \*.Domain, trong folder Things, tạo class ThingManager
 
@@ -200,7 +188,7 @@ namespace Acme.BookStore.Authors
 
 </details>
 
-Thêm Exception (nếu cần)
+### Thêm Exception (nếu cần)
 
 Trong project \*.Domain, trong folder Things, tạo class ThingReasonException
 
@@ -227,7 +215,7 @@ namespace Acme.BookStore.Authors
 
 </details>
 
-Thêm ErrorCodes (nếu cần)
+### Thêm ErrorCodes (nếu cần)
 
 Trong project \*.Domain.Shared, trong class \*DomainErrorCodes, thêm field ThingReason
 
@@ -248,13 +236,13 @@ namespace Acme.BookStore
 
 </details>
 
-Thêm code dịch (nếu cần)
+### Thêm translation code (nếu cần)
 
 Trong project \*.Domain.Shared, trong file Localization/\*/en.json, thêm code dịch
 
 <details>
 
-<summary>code dịch</summary>
+<summary>translation code</summary>
 
 ```json
 "BookStore:00001": "There is already an author with the same name: {name}"
@@ -263,7 +251,7 @@ Trong project \*.Domain.Shared, trong file Localization/\*/en.json, thêm code d
 
 </details>
 
-Thêm IThingRepository
+### Thêm IThingRepository
 
 Trong project \*.Domain, trong folder Things, thêm class IThingRepository
 
@@ -296,4 +284,363 @@ namespace Acme.BookStore.Authors
 
 </details>
 
-Thêm DbSet property Things
+### Thêm field DbSet\<Thing> Things
+
+Trong project \*.EntityFrameworkCore, trong folder EntityFrameworkCore, trong file \*DbContext, trong class \*DbContext, thêm field:
+
+<details>
+
+<summary>DbSet&#x3C;Thing> Things</summary>
+
+```csharp
+public DbSet<Thing> Things { get; set; }
+```
+
+</details>
+
+### Thêm code builder.Entity\<Thing>
+
+Trong project \*.EntityFrameworkCore, trong folder EntityFrameworkCore, trong file \*DbContext, trong class \*DbContext, trong method OnModelCreating, thêm code:
+
+<details>
+
+<summary>builder.Entity&#x3C;Thing></summary>
+
+```csharp
+builder.Entity<Author>(b =>
+{
+    b.ToTable(BookStoreConsts.DbTablePrefix + "Authors",
+        BookStoreConsts.DbSchema);
+    
+    b.ConfigureByConvention();
+    
+    b.Property(x => x.Name)
+        .IsRequired()
+        .HasMaxLength(AuthorConsts.MaxNameLength);
+
+    b.HasIndex(x => x.Name);
+});
+
+```
+
+</details>
+
+### Thêm Database Migration
+
+Trong project \*.EntityFrameworkCore, mở terminal lên và gõ:
+
+```
+dotnet ef migrations add Added_Authors
+dotnet ef database update
+```
+
+Xem [thêm](https://docs.abp.io/en/abp/latest/Tutorials/Part-7?UI=MVC\&DB=EF#create-a-new-database-migration)
+
+### Thêm EfCoreThingRepository
+
+Trong project \*.EntityFrameworkCore, trong folder Things, tạo class EfCoreThingRepository
+
+<details>
+
+<summary>class EfCoreThingRepository</summary>
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
+using Acme.BookStore.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore;
+
+namespace Acme.BookStore.Authors
+{
+    public class EfCoreAuthorRepository
+        : EfCoreRepository<BookStoreDbContext, Author, Guid>,
+            IAuthorRepository
+    {
+        public EfCoreAuthorRepository(
+            IDbContextProvider<BookStoreDbContext> dbContextProvider)
+            : base(dbContextProvider)
+        {
+        }
+
+        public async Task<Author> FindByNameAsync(string name)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet.FirstOrDefaultAsync(author => author.Name == name);
+        }
+
+        public async Task<List<Author>> GetListAsync(
+            int skipCount,
+            int maxResultCount,
+            string sorting,
+            string filter = null)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet
+                .WhereIf(
+                    !filter.IsNullOrWhiteSpace(),
+                    author => author.Name.Contains(filter)
+                 )
+                .OrderBy(sorting)
+                .Skip(skipCount)
+                .Take(maxResultCount)
+                .ToListAsync();
+        }
+    }
+}
+
+```
+
+</details>
+
+### Thêm IThingAppService
+
+Trong project \*.Application.Contracts, trong folder Things, tạo interface:
+
+<details>
+
+<summary>interface IThingAppService</summary>
+
+```csharp
+using System;
+using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+
+namespace Acme.BookStore.Authors
+{
+    public interface IAuthorAppService : IApplicationService
+    {
+        Task<AuthorDto> GetAsync(Guid id);
+
+        Task<PagedResultDto<AuthorDto>> GetListAsync(GetAuthorListDto input);
+
+        Task<AuthorDto> CreateAsync(CreateAuthorDto input);
+
+        Task UpdateAsync(Guid id, UpdateAuthorDto input);
+
+        Task DeleteAsync(Guid id);
+    }
+}
+
+```
+
+</details>
+
+### Thêm các DTO
+
+Trong project \*.Application.Contracts, trong folder Things, thêm các class:
+
+<details>
+
+<summary>class AuthorDto</summary>
+
+using System; using Volo.Abp.Application.Dtos;
+
+namespace Acme.BookStore.Authors { public class AuthorDto : EntityDto { public string Name { get; set; }
+
+```
+    public DateTime BirthDate { get; set; }
+
+    public string ShortBio { get; set; }
+}
+```
+
+}
+
+</details>
+
+<details>
+
+<summary>class GetAuthorListDto</summary>
+
+```csharp
+using Volo.Abp.Application.Dtos;
+
+namespace Acme.BookStore.Authors
+{
+    public class GetAuthorListDto : PagedAndSortedResultRequestDto
+    {
+        public string Filter { get; set; }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>class CreateAuthorDto</summary>
+
+```csharp
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Acme.BookStore.Authors
+{
+    public class CreateAuthorDto
+    {
+        [Required]
+        [StringLength(AuthorConsts.MaxNameLength)]
+        public string Name { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
+        
+        public string ShortBio { get; set; }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>class UpdateAuthorDto</summary>
+
+```csharp
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Acme.BookStore.Authors
+{
+    public class UpdateAuthorDto
+    {
+        [Required]
+        [StringLength(AuthorConsts.MaxNameLength)]
+        public string Name { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
+        
+        public string ShortBio { get; set; }
+    }
+}
+
+```
+
+</details>
+
+### Thêm ThingAppService
+
+Trong project \*.Application, thêm class:
+
+<details>
+
+<summary>class AuthorAppService</summary>
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Acme.BookStore.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Repositories;
+
+namespace Acme.BookStore.Authors
+{
+    [Authorize(BookStorePermissions.Authors.Default)]
+    public class AuthorAppService : BookStoreAppService, IAuthorAppService
+    {
+        private readonly IAuthorRepository _authorRepository;
+        private readonly AuthorManager _authorManager;
+
+        public AuthorAppService(
+            IAuthorRepository authorRepository,
+            AuthorManager authorManager)
+        {
+            _authorRepository = authorRepository;
+            _authorManager = authorManager;
+        }
+
+        public async Task<AuthorDto> GetAsync(Guid id)
+{
+    var author = await _authorRepository.GetAsync(id);
+    return ObjectMapper.Map<Author, AuthorDto>(author);
+}
+
+public async Task<PagedResultDto<AuthorDto>> GetListAsync(GetAuthorListDto input)
+{
+    if (input.Sorting.IsNullOrWhiteSpace())
+    {
+        input.Sorting = nameof(Author.Name);
+    }
+
+    var authors = await _authorRepository.GetListAsync(
+        input.SkipCount,
+        input.MaxResultCount,
+        input.Sorting,
+        input.Filter
+    );
+
+    var totalCount = input.Filter == null
+        ? await _authorRepository.CountAsync()
+        : await _authorRepository.CountAsync(
+            author => author.Name.Contains(input.Filter));
+
+    return new PagedResultDto<AuthorDto>(
+        totalCount,
+        ObjectMapper.Map<List<Author>, List<AuthorDto>>(authors)
+    );
+}
+
+[Authorize(BookStorePermissions.Authors.Create)]
+public async Task<AuthorDto> CreateAsync(CreateAuthorDto input)
+{
+    var author = await _authorManager.CreateAsync(
+        input.Name,
+        input.BirthDate,
+        input.ShortBio
+    );
+
+    await _authorRepository.InsertAsync(author);
+
+    return ObjectMapper.Map<Author, AuthorDto>(author);
+}
+
+    [Authorize(BookStorePermissions.Authors.Edit)]
+    public async Task UpdateAsync(Guid id, UpdateAuthorDto input)
+    {
+        var author = await _authorRepository.GetAsync(id);
+
+        if (author.Name != input.Name)
+        {
+            await _authorManager.ChangeNameAsync(author, input.Name);
+        }
+
+        author.BirthDate = input.BirthDate;
+        author.ShortBio = input.ShortBio;
+
+        await _authorRepository.UpdateAsync(author);
+    }
+
+    [Authorize(BookStorePermissions.Authors.Delete)]
+    public async Task DeleteAsync(Guid id)
+    {
+        await _authorRepository.DeleteAsync(id);
+    }
+
+    }
+}
+
+```
+
+</details>
+
+### Thêm Object Mapping
+
+Trong project \*.Application, trong class BookStoreApplicationAutoMapperProfile, thêm code sau:
+
+```csharp
+CreateMap<Author, AuthorDto>();
+```
+
+Hết
