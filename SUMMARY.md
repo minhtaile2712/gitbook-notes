@@ -2,7 +2,7 @@
 
 * [README](README.md)
 * [PowerShell](powershell.md)
-* [Thuật ngữ](thuat-ngu.md)
+* [Terms](terms.md)
 * [abp](abp.md)
 * [dotnet](dotnet.md)
 * [SQL](sql.md)
