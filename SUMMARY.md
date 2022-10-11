@@ -1,6 +1,7 @@
 # Table of contents
 
 * [README](README.md)
+* [winget](winget.md)
 * [PowerShell](powershell.md)
 * [Terms](thuat-ngu.md)
 * [abp](abp.md)
