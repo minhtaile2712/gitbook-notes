@@ -1,6 +1,8 @@
 # Table of contents
 
 * [README](README.md)
+* [windows install](windows-install.md)
+* [windows env](windows-env.md)
 * [winget](winget.md)
 * [PowerShell](powershell.md)
 * [Terms](thuat-ngu.md)
