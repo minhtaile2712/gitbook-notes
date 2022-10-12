@@ -529,7 +529,7 @@ namespace Acme.BookStore.Authors
 
 ### Thêm ThingAppService
 
-Trong project \*.Application, thêm class:
+Trong project \*.Application, trong folder Things, thêm class:
 
 <details>
 
