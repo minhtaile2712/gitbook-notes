@@ -439,18 +439,23 @@ Trong project \*.Application.Contracts, trong folder Things, thêm các class:
 
 <summary>class AuthorDto</summary>
 
-using System; using Volo.Abp.Application.Dtos;
+```csharp
+using System;
+using Volo.Abp.Application.Dtos;
 
-namespace Acme.BookStore.Authors { public class AuthorDto : EntityDto { public string Name { get; set; }
+namespace Acme.BookStore.Authors
+{
+    public class AuthorDto : EntityDto<Guid>
+    {
+        public string Name { get; set; }
+
+        public DateTime BirthDate { get; set; }
+
+        public string ShortBio { get; set; }
+    }
+}
 
 ```
-    public DateTime BirthDate { get; set; }
-
-    public string ShortBio { get; set; }
-}
-```
-
-}
 
 </details>
 
