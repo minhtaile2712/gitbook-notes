@@ -1,10 +1,12 @@
 # Terms
 
+### CQRS
+
+Command and Query Responsibility Segregation
+
 ### DTO
 
 Data transfer object.
-
-
 
 ### OLTP
 
