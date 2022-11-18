@@ -1,6 +1,7 @@
 # Table of contents
 
 * [README](README.md)
+* [Kafka](kafka.md)
 * [windows env](windows-env.md)
 * [winget](winget.md)
 * [PowerShell](powershell.md)
