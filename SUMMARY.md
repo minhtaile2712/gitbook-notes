@@ -1,6 +1,10 @@
 # Table of contents
 
 * [README](README.md)
+* [C#](c/README.md)
+  * [Installation](c/installation.md)
+  * [Syntax](c/syntax.md)
+  * [Techniques](c/techniques.md)
 * [Kafka](kafka.md)
 * [windows env](windows-env.md)
 * [winget](winget.md)
@@ -8,7 +12,6 @@
 * [abp](abp.md)
 * [dotnet](dotnet.md)
 * [SQL](sql.md)
-* [C#](c.md)
 * [Git](git.md)
 * [Kubernetes](kubernetes.md)
 * [Docker](docker.md)
