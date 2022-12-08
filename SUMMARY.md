@@ -6,7 +6,7 @@
   * [Syntax](c/syntax.md)
   * [Techniques](c/techniques.md)
   * [Links](c/links.md)
-* [.NET](.net/README.md)
+* [.NET](dotnet.md)
   * [Links](.net/links.md)
 * [Kafka](kafka.md)
 * [windows env](windows-env.md)
