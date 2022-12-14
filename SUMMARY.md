@@ -8,6 +8,7 @@
   * [Techniques](c-sharp-dotnet/techniques.md)
   * [Dotnet](c-sharp-dotnet/dotnet.md)
   * [EF Core](c-sharp-dotnet/ef-core.md)
+* [gRPC](grpc.md)
 * [Kafka](kafka.md)
 * [windows env](windows-env.md)
 * [winget](winget.md)
