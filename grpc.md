@@ -15,5 +15,5 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 ```
 
-Learn more [here](https://learn.microsoft.com/en-us/aspnet/core/grpc/troubleshoot?view=aspnetcore-7.0#unable-to-start-aspnet-core-grpc-app-on-macos)
+Learn more [here](https://go.microsoft.com/fwlink/?linkid=2099682)
 
