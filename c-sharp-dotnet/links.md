@@ -12,3 +12,7 @@ ASP.NET Core
 
 [https://learn.microsoft.com/en-us/aspnet/core/fundamentals](https://learn.microsoft.com/en-us/aspnet/core/fundamentals)
 
+Entity Framework Core (EF Core)
+
+[https://learn.microsoft.com/en-us/ef/core/](https://learn.microsoft.com/en-us/ef/core/)
+
